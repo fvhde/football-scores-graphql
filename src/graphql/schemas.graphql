@@ -1,0 +1,27 @@
+
+type Season {
+    id: ID,
+    currentMatchday: Int
+}
+
+type Area {
+    id: ID,
+    name: String
+}
+
+type Competition {
+    id: ID,
+    name: String,
+    area: Area,
+    currentSeason: Season
+}
+
+type Team{
+    id: ID,
+    name: String,
+    code: String
+}
+
+type Query {
+  competitions(id: ID, name: String, season: ID): [Competition]
+}
