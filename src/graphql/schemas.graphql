@@ -1,0 +1,78 @@
+
+type Season {
+    id: ID,
+    currentMatchday: Int
+}
+
+type Area {
+    id: ID,
+    name: String
+}
+
+type Competition {
+    id: ID,
+    name: String,
+    area: Area,
+    currentSeason: Season
+}
+
+type Team{
+    id: ID,
+    name: String,
+    tla: String,
+    founded: Int
+}
+
+type ScoreSlice{
+    homeTeam: Int,
+    awayTeam: Int
+}
+
+type Score{
+    winner: String,
+    duration: String,
+    fullTime: ScoreSlice,
+    extraTime: ScoreSlice,
+    penalties: ScoreSlice
+}
+
+type MatchActor{
+    id: ID,
+    name: String,
+    position: String,
+    shirtNumber: Int
+}
+
+type MatchTeam{
+    id: ID,
+    name: String,
+    coach: MatchActor,
+    captain: MatchActor,
+    lineup: [MatchActor],
+    bench: [MatchActor]
+}
+
+type MatchGoal{
+    minute: Int,
+    team: MatchTeam,
+    scorer: MatchActor,
+    assist: MatchActor
+}
+
+type Match{
+    id: ID,
+    season: Season,
+    matchday: Int,
+    status: String,
+    utcDate: String,
+    score: Score,
+    awayTeam: MatchTeam,
+    homeTeam: MatchTeam,
+    goals: [MatchGoal],
+}
+
+type Query {
+    competitions(id: ID, name: String, season: ID): [Competition]
+    teams(id: ID, name: String, tla: Int, competitionId: Int!): [Team]
+    matches(id: ID, awayTeam: ID, homeTeam: ID, status: String, competitionId: Int!): [Match]
+}
