@@ -8,7 +8,9 @@ const schema = makeExecutableSchema({
     resolvers: {
 
       Query: {
-        competitions: (_, filters) => footballService.getCompetitions(filters),
+          competitions: (_, filters) => footballService.getCompetitions(filters),
+          teams: (_, filters) => footballService.getTeams(filters),
+          matches: (_, filters) => footballService.getMatches(filters)
       },
 
     }

@@ -17,6 +17,29 @@ async function getCompetitions(filters)
     return result.competitions;
 }
 
+async function getTeams(filters)
+{
+    options.url = baseUrl + 'competitions/' + filters.competitionId + '/teams';
+    try {
+        let result = await request(options);
+        result = JSON.parse(result);
+        return result.teams;
+    }
+    catch (e) {
+        return e.message;
+    }
+}
+
+async function getMatches(filters)
+{
+    options.url = baseUrl + 'competitions/' + filters.competitionId + '/matches';
+    let result = await request(options);
+    result = JSON.parse(result);
+    return result.matches;
+}
+
 module.exports = {
-  getCompetitions,
+    getCompetitions,
+    getTeams,
+    getMatches
 };
