@@ -11,6 +11,14 @@ var options = {
 
 async function getCompetitions(filters)
 {
+    if(filters.id)
+    {
+        options.url = baseUrl + 'competitions/' + filters.id;
+        let result = await request(options);
+        result = JSON.parse(result);
+        return result;
+    }
+
     options.url = baseUrl + 'competitions';
     let result = await request(options);
     result = JSON.parse(result);
@@ -18,7 +26,15 @@ async function getCompetitions(filters)
 }
 
 async function getTeams(filters)
-{
+{   
+    if(filters.id)
+    {
+        options.url = baseUrl + 'teams/' + filters.id;
+        let result = await request(options);
+        result = JSON.parse(result);
+        return result;
+    }
+
     options.url = baseUrl + 'competitions/' + filters.competitionId + '/teams';
     try {
         let result = await request(options);
@@ -32,6 +48,14 @@ async function getTeams(filters)
 
 async function getMatches(filters)
 {
+    if(filters.id)
+    {
+        options.url = baseUrl + 'matches/' + filters.id;
+        let result = await request(options);
+        result = JSON.parse(result);
+        return result;
+    }
+
     let matchDay = '';
 
     if(filters.matchday) {
@@ -60,10 +84,18 @@ async function getScorers(filters)
     return result.scorers;
 }
 
+async function getPlayer(filters) {
+    options.url = baseUrl + 'players/' + filters.id;
+    let result = await request(options);
+    result = JSON.parse(result);
+    return result;
+}
+
 module.exports = {
     getCompetitions,
     getTeams,
     getMatches,
     getStandings,
-    getScorers
+    getScorers,
+    getPlayer
 };
