@@ -32,14 +32,38 @@ async function getTeams(filters)
 
 async function getMatches(filters)
 {
-    options.url = baseUrl + 'competitions/' + filters.competitionId + '/matches';
+    let matchDay = '';
+
+    if(filters.matchday) {
+        matchDay = '?matchday=' + filters.matchday;
+    }
+
+    options.url = baseUrl + 'competitions/' + filters.competitionId + '/matches' + matchDay;
     let result = await request(options);
     result = JSON.parse(result);
     return result.matches;
 }
 
+async function getStandings(filters)
+{
+    options.url = baseUrl + 'competitions/' + filters.competitionId + '/standings';
+    let result = await request(options);
+    result = JSON.parse(result);
+    return result.standings;
+}
+
+async function getScorers(filters)
+{
+    options.url = baseUrl + 'competitions/' + filters.competitionId + '/scorers';
+    let result = await request(options);
+    result = JSON.parse(result);
+    return result.scorers;
+}
+
 module.exports = {
     getCompetitions,
     getTeams,
-    getMatches
+    getMatches,
+    getStandings,
+    getScorers
 };

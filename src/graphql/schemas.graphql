@@ -1,10 +1,10 @@
-
+#Base Types
 type Season {
     id: ID,
     currentMatchday: Int
 }
 
-type Area {
+type Base {
     id: ID,
     name: String
 }
@@ -12,17 +12,31 @@ type Area {
 type Competition {
     id: ID,
     name: String,
-    area: Area,
+    area: Base,
     currentSeason: Season
 }
 
 type Team{
     id: ID,
     name: String,
+    area: Base
     tla: String,
-    founded: Int
+    founded: Int,
+    venue: String
 }
 
+type Player{
+    id: ID,
+    name: String,
+    firstName: String,
+    lastName: String,
+    dateOfBirth: String,
+    nationality: String,
+    position: String,
+}
+
+
+#Match Types
 type ScoreSlice{
     homeTeam: Int,
     awayTeam: Int
@@ -71,8 +85,39 @@ type Match{
     goals: [MatchGoal],
 }
 
+#Standing
+type TableElement{
+    position: Int,
+    team: Base,
+    playedGames: Int,
+    won: Int,
+    draw: Int,
+    lost: Int,
+    points: Int,
+    goalsFor: Int,
+    goalsAgainst: Int,
+    goalDifference: Int
+}
+
+type Standing {
+    id: ID,
+    stage: String,
+    type: String,
+    table: [TableElement]
+}
+
+#Scorer
+type Scorer{
+    player: Player,
+    team: Base,
+    numberOfGoals: Int
+}
+
+#Queries
 type Query {
     competitions(id: ID, name: String, season: ID): [Competition]
     teams(id: ID, name: String, tla: Int, competitionId: Int!): [Team]
-    matches(id: ID, awayTeam: ID, homeTeam: ID, status: String, competitionId: Int!): [Match]
+    matches(id: ID, awayTeam: ID, homeTeam: ID, status: String, competitionId: Int!, matchday: Int): [Match]
+    standings(id: ID, stage: String, type:String, competitionId: Int!): [Standing]
+    scorers(competitionId: Int!): [Scorer]
 }
