@@ -1,94 +1,128 @@
 const request = require('request-promise');
 const baseUrl = 'http://api.football-data.org/v2/';
-const token = '98b88790dd19469db5807314dd2317f4';
+const env = require('../config/env');
 
 var options = {
     url: '',
     headers: {
-      'X-Auth-Token': token
+      'X-Auth-Token': env.apiToken
     }
 };
 
-async function getCompetitions(filters)
+async function getCompetitions(id)
 {
-    if(filters.id)
-    {
-        options.url = baseUrl + 'competitions/' + filters.id;
+    try{
+        if(id != 0) {
+            options.url = baseUrl + 'competitions/' + id;
+            let result = await request(options);
+            result = JSON.parse(result);
+            return result;
+        }
+
+        options.url = baseUrl + 'competitions';
         let result = await request(options);
         result = JSON.parse(result);
-        return result;
+        return result.competitions;
     }
 
-    options.url = baseUrl + 'competitions';
-    let result = await request(options);
-    result = JSON.parse(result);
-    return result.competitions;
+    catch (e) {
+        let error = JSON.parse(e.error);
+        throw new Error(error.message);
+    }
 }
 
-async function getTeams(filters)
-{   
-    if(filters.id)
-    {
-        options.url = baseUrl + 'teams/' + filters.id;
-        let result = await request(options);
-        result = JSON.parse(result);
-        return result;
-    }
-
-    options.url = baseUrl + 'competitions/' + filters.competitionId + '/teams';
+async function getTeams(competitionId, id=0)
+{
     try {
+        if(id != 0) {
+            options.url = baseUrl + 'teams/' + id;
+            let result = await request(options);
+            result = JSON.parse(result);
+            return result;
+        }
+
+        options.url = baseUrl + 'competitions/' + competitionId + '/teams';
         let result = await request(options);
         result = JSON.parse(result);
         return result.teams;
     }
+
     catch (e) {
-        return e.message;
+        let error = JSON.parse(e.error);
+        throw new Error(error.message);
     }
 }
 
-async function getMatches(filters)
+async function getMatches(competitionId, id=0 , matchday = null)
 {
-    if(filters.id)
-    {
-        options.url = baseUrl + 'matches/' + filters.id;
+    try{
+        if(id != 0) {
+            options.url = baseUrl + 'matches/' + id;
+            let result = await request(options);
+            result = JSON.parse(result);
+            return result.match;
+        }
+
+        let matchDay = '';
+
+        if(matchday) {
+            matchDay = '?matchday=' + matchday;
+        }
+
+        options.url = baseUrl + 'competitions/' + competitionId + '/matches' + matchDay;
+        let result = await request(options);
+        result = JSON.parse(result);
+        return result.matches;
+    }
+
+    catch (e) {
+        let error = JSON.parse(e.error);
+        throw new Error(error.message);
+    }
+}
+
+async function getStandings(competitionId)
+{
+    try {
+        options.url = baseUrl + 'competitions/' + competitionId + '/standings';
+        let result = await request(options);
+        result = JSON.parse(result);
+        return result.standings;
+    }
+
+    catch (e) {
+        let error = JSON.parse(e.error);
+        throw new Error(error.message);
+    }
+}
+
+async function getScorers(competitionId)
+{
+    try {
+        options.url = baseUrl + 'competitions/' + competitionId + '/scorers';
+        let result = await request(options);
+        result = JSON.parse(result);
+        return result.scorers;
+    }
+
+    catch (e) {
+        let error = JSON.parse(e.error);
+        throw new Error(error.message);
+    }
+}
+
+async function getPlayer(id) {
+    try {
+        options.url = baseUrl + 'players/' + id;
         let result = await request(options);
         result = JSON.parse(result);
         return result;
     }
 
-    let matchDay = '';
-
-    if(filters.matchday) {
-        matchDay = '?matchday=' + filters.matchday;
+    catch (e) {
+        let error = JSON.parse(e.error);
+        throw new Error(error.message);
     }
-
-    options.url = baseUrl + 'competitions/' + filters.competitionId + '/matches' + matchDay;
-    let result = await request(options);
-    result = JSON.parse(result);
-    return result.matches;
-}
-
-async function getStandings(filters)
-{
-    options.url = baseUrl + 'competitions/' + filters.competitionId + '/standings';
-    let result = await request(options);
-    result = JSON.parse(result);
-    return result.standings;
-}
-
-async function getScorers(filters)
-{
-    options.url = baseUrl + 'competitions/' + filters.competitionId + '/scorers';
-    let result = await request(options);
-    result = JSON.parse(result);
-    return result.scorers;
-}
-
-async function getPlayer(filters) {
-    options.url = baseUrl + 'players/' + filters.id;
-    let result = await request(options);
-    result = JSON.parse(result);
-    return result;
 }
 
 module.exports = {

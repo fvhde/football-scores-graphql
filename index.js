@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
+const env = require('./src/config/env');
 
 // Initialize the app
 const app = express();
@@ -14,6 +15,6 @@ app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Go to npm  to run queries!');
+app.listen(env.port, () => {
+  console.log('\n Graphql endpoint at localhost:' + env.port + '/graphql, \n\n Visual editor at localhost:' + env.port + '/graphiql');
 });

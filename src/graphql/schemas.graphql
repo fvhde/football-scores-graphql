@@ -114,12 +114,12 @@ type Scorer{
 #Queries
 type Query {
     competition(id: Int!): Competition
-    competitions: [Competition]
+    competitions(offset: Int, limit: Int): [Competition !]!
     team(id: Int!): Team
-    teams(competitionId: Int!): [Team]
+    teams(competitionId: Int!, offset: Int, limit: Int): [Team]
     match(id: Int!): Match
-    matches(competitionId: Int!, matchday: Int): [Match]
-    standings(type:String, competitionId: Int!): [Standing]
-    scorers(competitionId: Int!): [Scorer]
+    matches(competitionId: Int!, matchday: Int, offset: Int, limit: Int): [Match]
+    standings(type:String, competitionId: Int!, offset: Int, limit: Int): [Standing]
+    scorers(competitionId: Int!, offset: Int, limit: Int): [Scorer]
     player(id: Int!): Player
 }
