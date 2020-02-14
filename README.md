@@ -33,7 +33,7 @@ L'API est accessible à l'adresse : `localhost:3000/api`
 
 La documentation et les requêtes peuvent se faire à l'adresse `localhost:3000/graphiql`
 
-Nous utilisons l'api `www.football-data.org/` pour récuperer les informations.
+Nous utilisons l'api `www.football-data.org` pour récuperer les informations.
 
 Vu que nous utilisons un token gratuit nous avons accès seulement aux compétitions avec identifiants :
 * 2000 : FIFA World Cup **World**
