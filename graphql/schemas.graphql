@@ -1,3 +1,10 @@
+#API User
+type User {
+    id: Int!
+    username: String!
+    email: String!
+}
+
 #Base Types
 type Season {
     id: ID,
@@ -113,6 +120,7 @@ type Scorer{
 
 #Queries
 type Query {
+    me: User
     competition(id: Int!): Competition
     competitions(offset: Int, limit: Int): [Competition !]!
     team(id: Int!): Team
@@ -122,4 +130,10 @@ type Query {
     standings(type:String, competitionId: Int!, offset: Int, limit: Int): [Standing]
     scorers(competitionId: Int!, offset: Int, limit: Int): [Scorer]
     player(id: Int!): Player
+}
+
+#Mutations
+type Mutation {
+    signup (username: String!, email: String!, password: String!): String
+    login (email: String!, password: String!): String
 }

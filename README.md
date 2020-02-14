@@ -16,12 +16,20 @@ Une fois cette étape terminée, rendez vous à la racine du projet puis install
 ```sh
 $ npm install
 ```
+
+Initialiser la base de données Sqlite:
+
+```sh
+$ node_modules/.bin/sequelize db:migrate
+```
 ### Utilisation
 
 Pour démarrer le serveur faites :
 ```sh
 $ npm start
 ```
+
+L'API est accessible à l'adresse : `localhost:3000/api`
 
 La documentation et les requêtes peuvent se faire à l'adresse `localhost:3000/graphiql`
 
@@ -41,6 +49,7 @@ Vu que nous utilisons un token gratuit nous avons accès seulement aux compétit
 * 2019 : Serie A **Italy**
 * 2021 : Premier League **England**
 
+Vous pouvez remplacer le token par votre propre token dans le fichier `config/env.js`
 License
 ----
 

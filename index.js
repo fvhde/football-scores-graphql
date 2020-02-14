@@ -1,20 +1,33 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
-const env = require('./src/config/env');
+const jwt = require('express-jwt');
+const env = require('./config/env');
+
+const auth = jwt({
+  secret: env.JWTSecret,
+  credentialsRequired: false
+})
 
 // Initialize the app
 const app = express();
 
-const schema = require('./src/middleware/graphql.middleware');
+//Get GraphQl schemas
+const schema = require('./middlewares/graphql.middleware');
 
 // The GraphQL endpoint
-app.use('/graphql', bodyParser.json(), graphqlExpress({ schema }));
+app.use('/api', bodyParser.json(), auth, graphqlExpress(req => ({
+    schema,
+    context: {
+      user: req.user
+    }
+  }))
+ );
 
 // GraphiQL, a visual editor for queries
-app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+app.use('/graphiql', graphiqlExpress({ endpointURL: '/api' }));
 
 // Start the server
 app.listen(env.port, () => {
-  console.log('\n Graphql endpoint at localhost:' + env.port + '/graphql, \n\n Visual editor at localhost:' + env.port + '/graphiql');
+  console.log('\n Graphql endpoint at localhost:' + env.port + '/api, \n\n Visual editor at localhost:' + env.port + '/graphiql');
 });

@@ -6,5 +6,6 @@ if ( process.env.NODE_ENV === 'test' ) {
 
 module.exports = {
     "port": port,
-    "apiToken" : '98b88790dd19469db5807314dd2317f4'
+    "apiToken" : '98b88790dd19469db5807314dd2317f4',
+    "JWTSecret" : 'somereallylongsecretkey'
 };
