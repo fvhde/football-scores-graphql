@@ -50,6 +50,7 @@ Vu que nous utilisons un token gratuit nous avons accès seulement aux compétit
 * 2021 : Premier League **England**
 
 Vous pouvez remplacer le token par votre propre token dans le fichier `config/env.js`
+
 License
 ----
 
